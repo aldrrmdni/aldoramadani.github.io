@@ -106,16 +106,24 @@
            </div>
            <div class="row justify-content-center">
             <div class="col-md-6">
-              <form>
+              <div class="alert alert-dark alert-dismissible fade show d-none my-alert" role="alert">
+                <strong>Terima Kasih!</strong> Pesan anda sudah kami terima.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form name="portofolio.com">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                  <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
                 </div>
                 <div class="mb-3">
-                  <label for="message" class="form-label">Message</label>
-                  <textarea class="form-control" id="message" rows="3"></textarea>
+                  <label for="message" class="form-label">message</label>
+                  <textarea class="form-control" id="message" rows="3" name="pesan"></textarea>
                 </div>
-                <button type="submit" class="btn btn-dark">Submit</button>
+                <button type="submit" class="btn btn-dark btn-submit">Submit</button>
+                <button class="btn btn-dark btn-loading d-none" type="button" disabled>
+                  <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                  <span role="status">Loading...</span>
+                </button>
               </form>
             </div>
            </div>
@@ -123,10 +131,37 @@
       </section>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#273036" fill-opacity="1" d="M0,192L13.3,160C26.7,128,53,64,80,80C106.7,96,133,192,160,229.3C186.7,267,213,245,240,250.7C266.7,256,293,288,320,261.3C346.7,235,373,149,400,133.3C426.7,117,453,171,480,202.7C506.7,235,533,245,560,245.3C586.7,245,613,235,640,229.3C666.7,224,693,224,720,234.7C746.7,245,773,267,800,240C826.7,213,853,139,880,90.7C906.7,43,933,21,960,21.3C986.7,21,1013,43,1040,85.3C1066.7,128,1093,192,1120,181.3C1146.7,171,1173,85,1200,69.3C1226.7,53,1253,107,1280,160C1306.7,213,1333,267,1360,256C1386.7,245,1413,171,1427,133.3L1440,96L1440,320L1426.7,320C1413.3,320,1387,320,1360,320C1333.3,320,1307,320,1280,320C1253.3,320,1227,320,1200,320C1173.3,320,1147,320,1120,320C1093.3,320,1067,320,1040,320C1013.3,320,987,320,960,320C933.3,320,907,320,880,320C853.3,320,827,320,800,320C773.3,320,747,320,720,320C693.3,320,667,320,640,320C613.3,320,587,320,560,320C533.3,320,507,320,480,320C453.3,320,427,320,400,320C373.3,320,347,320,320,320C293.3,320,267,320,240,320C213.3,320,187,320,160,320C133.3,320,107,320,80,320C53.3,320,27,320,13,320L0,320Z"></path></svg>
 
+
       <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2024 Aldo Ramadani</p>
       </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzRx5sypXsWJfA4kYHj-wSzaAMrGZKd2RkL1oFJWAMhBO7g_xD0qy2awjyQ1XzK_uffFg/exec'
+      const form = document.forms['portofolio.com']
+      const btnSubmit = document.querySelector('.btn-submit');
+      const btnLoading = document.querySelector('.btn-loading');
+      const myAlert = document.querySelector('.my-alert');
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+
+        //ketikasubmit
+        //tampilkan
+        btnLoading.classList.toggle('d-none');
+        btnSubmit.classList.toggle('d-none');
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            btnLoading.classList.toggle('d-none');
+            btnSubmit.classList.toggle('d-none');
+            //tampilkan alert
+            myAlert.classList.toggle('d-none');
+            //reset
+            form.reset();
+            console.log('Success!', response)})
+          .catch(error => console.error('Error!', error.message))
+      }) 
+    </script>
   </body>
 </html>
